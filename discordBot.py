@@ -122,8 +122,8 @@ async def help(ctx):
     )
     embedmessage.set_footer(text='bain#5038')
     embedmessage.set_author(name='brainBot',
-                            icon_url='https://cdn.discordapp.com/avatars/530381879916888065'
-                                     '/3aea2442c56d5af592ef11d68e20bb32.png')
+                            icon_url="https://cdn.discordapp.com/avatars/530381879916888065/6c80ee29b6d20adb223a25806e8b29d3.png",
+                            url='https://github.com/bain3/brainBot')
     embedmessage.add_field(name='.help', value='Shows this message', inline=True)
     embedmessage.add_field(name='.start_chat', value='Starts the chat.', inline=False)
     embedmessage.add_field(name='.stop_chat', value='Stops the chat', inline=True)
