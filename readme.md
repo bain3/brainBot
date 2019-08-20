@@ -16,3 +16,6 @@ Select the current channel for the conversation.
 Upload your own RiveScript file to the bot. Attach the file to the command.
 ##### .reload_bot
 Reload the chat bot for your server.
+
+#### Add it to your server
+https://discordapp.com/oauth2/authorize?client_id=530381879916888065&permissions=130112&scope=bot
