@@ -22,6 +22,7 @@ bot.remove_command('help')
 # On ready
 @bot.event
 async def on_ready():
+    await bot.change_presence(activity=discord.Activity(name="chats", type=3))  # Presence: Watching chats
     for guild in bot.guilds:
         for channel in guild.channels:
             if channel.type == discord.ChannelType.text:
