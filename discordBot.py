@@ -42,7 +42,8 @@ async def on_guild_join(guild):
 async def on_message(message):
     global chats
     # check for DM chats
-    if message.channel.type == discord.ChannelType.private or message.channel.type == discord.ChannelType.group:
+    if message.channel.type == discord.ChannelType.private or message.channel.type == discord.ChannelType.group and \
+            message.author != bot.user:
         await message.channel.send(embed=embed_maker('I do not support commands in DM channels.'))
     # if chatbot is turned on, the message is not a command and the channel is correct
     elif chats[message.guild.id][2] is True and not message.content.startswith('.') \
