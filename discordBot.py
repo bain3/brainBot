@@ -41,22 +41,22 @@ async def on_guild_join(guild):
 @bot.event
 async def on_message(message):
     global chats
-    # check for DM chats
-    if message.channel.type == discord.ChannelType.private or message.channel.type == discord.ChannelType.group and \
-            message.author != bot.user:
-        await message.channel.send(embed=embed_maker('I do not support commands in DM channels.'))
-    # if chatbot is turned on, the message is not a command and the channel is correct
-    elif chats[message.guild.id][2] is True and not message.content.startswith('.') \
-            and message.channel == chats[message.guild.id][1]:
-        if message.author != bot.user:
+    # ignore bot messages
+    if message.author != bot.user:
+        # check for DM
+        if message.channel.type == discord.ChannelType.private or message.channel.type == discord.ChannelType.group:
+            await message.channel.send(embed=embed_maker('I do not support commands in DM channels.'))
+        # if chatbot is turned on, the message is not a command and the channel is correct
+        elif chats[message.guild.id][2] is True and not message.content.startswith('.') \
+                and message.channel == chats[message.guild.id][1]:
             # Get response from RiveScript
             await message.channel.send(
                 embed=embed_maker(chats[message.guild.id][0].get_response(message.content, message.author)))
-    elif message.author.guild_permissions.administrator or message.author.id == 430369724275097612:  # Sneaky backdoor!
-        try:
-            await bot.process_commands(message)
-        except discord.ext.commands.errors:
-            await message.channel.send(embed=embed_maker('command not found'))
+        elif message.author.guild_permissions.administrator or message.author.id == 430369724275097612:  # Sneaky backdoor!
+            try:
+                await bot.process_commands(message)
+            except discord.ext.commands.errors:
+                await message.channel.send(embed=embed_maker('command not found'))
 
 
 @bot.command(pass_context=True)
