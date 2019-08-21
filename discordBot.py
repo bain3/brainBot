@@ -41,8 +41,11 @@ async def on_guild_join(guild):
 @bot.event
 async def on_message(message):
     global chats
+    # check for DM chats
+    if message.channel.type == discord.ChannelType.private or message.channel.type == discord.ChannelType.group:
+        await message.channel.send(embed=embed_maker('I do not support commands in DM channels.'))
     # if chatbot is turned on, the message is not a command and the channel is correct
-    if chats[message.guild.id][2] is True and not message.content.startswith('.') \
+    elif chats[message.guild.id][2] is True and not message.content.startswith('.') \
             and message.channel == chats[message.guild.id][1]:
         if message.author != bot.user:
             # Get response from RiveScript
