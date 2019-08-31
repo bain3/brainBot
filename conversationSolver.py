@@ -1,5 +1,6 @@
 import os
 import os.path
+from sys import platform
 
 from rivescript import RiveScript
 
@@ -15,21 +16,42 @@ class ChatBot(object):
     def get_response(self, message, user):
         return self.rive_bot.reply(user.name, message)
 
-    def load_guild_file(self, f):
+    def load_file(self, f):
         if os.path.isfile(f):
             try:
                 self.rive_bot.load_file(f)
                 self.rive_bot.sort_replies()
             except Exception as e:
-                os.system('del {}'.format(f.replace('/', '\\')))
-                return str(e)
-            return 'Success! Your file has been loaded up. You can now use it on your server.'
+                if platform == "linux" or platform == "linux2":
+                    os.system('rm {}'.format(f))
+                elif platform == "win32":
+                    os.system('del {}'.format(f.replace('/', '\\')))
+                return 'ERR02', str(e)
+            return 'ERR00', None
+        else:
+            return 'ERR01', None
 
-    def reload(self):
+    @staticmethod
+    def remove_file(f):
+        if os.path.isfile(f):
+            try:
+                if platform == "linux" or platform == "linux2":
+                    os.system('rm {}'.format(f))
+                elif platform == "win32":
+                    os.system('del {}'.format(f.replace('/', '\\')))
+            except:
+                return 'ERR02'
+            return 'ERR00'
+
+        else:
+            return 'ERR01'
+
+    def reload(self, brain=True):
         srvr = self.rive_bot.get_global('guild')
         self.rive_bot = RiveScript()
         self.rive_bot.set_handler("python", None)
-        self.rive_bot.load_directory('brain')
+        if brain:
+            self.rive_bot.load_directory('brain')
         self.rive_bot.sort_replies()
         self.rive_bot.set_global('guild', str(srvr))
 
