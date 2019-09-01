@@ -1,4 +1,4 @@
-### [brainBot (click to add)](https://discordapp.com/oauth2/authorize?client_id=530381879916888065&permissions=64512&scope=bot)
+### [brainBot (click to add)](https://discordapp.com/oauth2/authorize?client_id=530381879916888065&permissions=130112&scope=bot)
 A discord bot that can download and run custom rivescripts for each server. To create your own
 rive script head on to www.rivescript.com.
 
