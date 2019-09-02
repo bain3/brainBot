@@ -1,6 +1,7 @@
 .idea
 servers
 token.txt
+error_codes.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

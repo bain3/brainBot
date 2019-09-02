@@ -73,13 +73,15 @@ async def on_message(message):
     :return:
     """
     global chats
+    if message.author.bot:  # protection from bots
+        return
     # reply with error message when message.author is discord.User
     if isinstance(message.author, discord.User):
-        await message.channel.send(embed=embed_maker("This bot is currently only operational in servers,"
-                                                     " not in private channels.", 'ERR02', True))
-        print('DM / Known bug: {}, {}'.format(message.channel.type, message.author.name))  # debug
+        if not message.author.discriminator == '0000':
+            await message.channel.send(embed=embed_maker("This bot is currently only operational in servers,"
+                                                         " not in private channels.", 'ERR02', True))
         return
-    if message.author != bot.user:
+    if message.author != bot.user: # protection from itself
         # if chatbot is turned on, the message is not a command and the channel is correct
         if chats[message.guild.id][2] is True and not message.content.startswith('c.') \
                 and message.channel == chats[message.guild.id][1]:
