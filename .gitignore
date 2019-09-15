@@ -1,5 +1,6 @@
 .idea
 servers
+resources
 token.txt
 error_codes.txt
 # Byte-compiled / optimized / DLL files
